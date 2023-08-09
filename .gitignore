@@ -1,0 +1,6 @@
+/backend/__pycache__/*
+/backend/.idea/*
+/backend/templates/*
+/frontend/expressBackend/node_modules/*
+/frontend/frontend/build/*
+/frontend/frontend/node_modules/*

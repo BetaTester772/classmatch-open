@@ -1,0 +1,42 @@
+.App {
+    justify-content: center;
+    height: 100vh;
+}
+
+#contain {
+    background-color: rgb(221, 221, 221);
+    margin-top: 30vh;
+    border-radius: 30px;
+    padding: 30px;
+}
+
+#in {
+    width: 100%;
+    height: 40px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+}
+
+#btn {
+    width: 150px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: rgb(180, 180, 180);
+}
+
+
+#err {
+    color: red;
+}
+
+#btn2 {
+    width: 150px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: rgb(180, 180, 180);
+}
+
+#navresister {
+    left: 100px;
+    position: absolute;
+}
