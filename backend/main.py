@@ -10,10 +10,6 @@ from pathlib import Path
 import pymysql
 
 db_config = {
-    "host": "localhost",
-    "user": "root",
-    "password": "13579013579ahn",
-    "database": "classmatch"
 }
 
 # MySQL에 연결
@@ -51,14 +47,14 @@ def index(userInfo:resisterData):
   cls = utils.get_Timetable(session)
 
   userid, username = utils.get_Id_Name(session)
-  query = f'SELECT * FROM nameclass WHERE id="{userid}"'
+  query = f'SELECT * FROM table WHERE id="{userid}"'
   cursor.execute(query)
   if len(cursor.fetchall()) != 0:
-    query = f'UPDATE nameclass SET class="{cls}" WHERE id="{userid}"'
+    query = f'UPDATE table SET class="{cls}" WHERE id="{userid}"'
     cursor.execute(query)
     connection.commit()
   else:
-    query = f'INSERT INTO nameclass VALUES ("{userid}", "{username}", "{cls}")'
+    query = f'INSERT INTO table VALUES ("{userid}", "{username}", "{cls}")'
     cursor.execute(query)
     connection.commit()
   return 'success'''
@@ -66,14 +62,14 @@ def index(userInfo:resisterData):
 
 @app.post("/match")
 def index(userInfo:matchData):
-  query = f'SELECT * FROM nameclass WHERE name="{userInfo.id1}"'
+  query = f'SELECT * FROM table WHERE name="{userInfo.id1}"'
   cursor.execute(query)
   cls1 = cursor.fetchall()
   if len(cls1) == 0:
     return '이름1은 등록되지 않은 이름입니다'
   cls1 = eval(cls1[0][2])
 
-  query = f'SELECT * FROM nameclass WHERE name="{userInfo.id2}"'
+  query = f'SELECT * FROM table WHERE name="{userInfo.id2}"'
   cursor.execute(query)
   cls2 = cursor.fetchall()
   if len(cls2) == 0:
