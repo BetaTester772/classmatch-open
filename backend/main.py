@@ -10,10 +10,10 @@ from pathlib import Path
 import pymysql
 
 db_config = {
-    "host": "",
-    "user": "",
-    "password": "",
-    "database": ""
+    "host": "localhost",
+    "user": "root",
+    "password": "13579013579ahn",
+    "database": "classmatch"
 }
 
 # MySQL에 연결
@@ -45,41 +45,35 @@ app.add_middleware(
 
 @app.post("/resister")
 def index(userInfo:resisterData):
-  session = utils.login(userInfo.id, userInfo.pw)
-  if session == 'fail':
-    return '계정이 잘못되었습니다'
+  session = utils.login(userInfo.id,userInfo.pw)
+  if session == False:
+      return '계정이 잘못됐습니다.'
+  cls = utils.get_Timetable(session)
 
-  res = session.post('https://go.hana.hs.kr/json/userTimeTable.ajax', headers=info.headers, data={'mcode': '106'})
-  timetable = eval(res.content)["resultList"]
-  cls1 = {}
-
-  for i in timetable:
-    cls1[i['scodeName']] = i['divCode']
-
-  userid, username = utils.get_Id_Name(userInfo.id,userInfo.pw)
-  query = f'SELECT * FROM table WHERE var="{userid}"'
+  userid, username = utils.get_Id_Name(session)
+  query = f'SELECT * FROM nameclass WHERE id="{userid}"'
   cursor.execute(query)
   if len(cursor.fetchall()) != 0:
-    query = f'UPDATE table SET var="{cls1}" WHERE var="{userid}"'
+    query = f'UPDATE nameclass SET class="{cls}" WHERE id="{userid}"'
     cursor.execute(query)
     connection.commit()
   else:
-    query = f'INSERT INTO table VALUES ("{userid}", "{username}", "{cls1}")'
+    query = f'INSERT INTO nameclass VALUES ("{userid}", "{username}", "{cls}")'
     cursor.execute(query)
     connection.commit()
-  return 'success'
+  return 'success'''
 
 
 @app.post("/match")
 def index(userInfo:matchData):
-  query = f'SELECT * FROM table WHERE var="{userInfo.id1}"'
+  query = f'SELECT * FROM nameclass WHERE name="{userInfo.id1}"'
   cursor.execute(query)
   cls1 = cursor.fetchall()
   if len(cls1) == 0:
     return '이름1은 등록되지 않은 이름입니다'
   cls1 = eval(cls1[0][2])
 
-  query = f'SELECT * FROM table WHERE var="{userInfo.id2}"'
+  query = f'SELECT * FROM nameclass WHERE name="{userInfo.id2}"'
   cursor.execute(query)
   cls2 = cursor.fetchall()
   if len(cls2) == 0:
